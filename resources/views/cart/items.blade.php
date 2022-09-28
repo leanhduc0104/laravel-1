@@ -307,7 +307,6 @@ button.btn:hover{
 }
 </style>
 <body>
-  <h1 id="title">Hello</h1>
 <div class="wrapper">
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex flex-column">
@@ -339,7 +338,7 @@ button.btn:hover{
                     </thead>
                     <tbody>
                         @if($carts)
-                        @foreach($carts as $cart)
+                        @foreach($carts as $index => $cart)
                             <tr>
                                 <td class="item">
                                     <div class="d-flex">
@@ -368,7 +367,7 @@ button.btn:hover{
                                 <td class="font-weight-bold">
                                     {{$cart->getTotal()}}
                                     <div class="close">&times;
-                                        <input type="hidden" value="{{key($cart)}}" name="delete">
+                                        <input type="hidden" value="{{$index}}" name="delete">
                                     </div>
                                 </td>
                                 {{-- <input type="hidden" value="{{$cart->product->id}}"> --}}
@@ -387,15 +386,6 @@ button.btn:hover{
                     <span class="fas fa-minus"></span>
                 </button>
             </div>
-            <div class="d-flex flex-column justify-content-end align-items-end">
-                <div class="d-flex px-3 pr-md-5 py-1 subtotal">
-                    <div class="px-4">Subtotal</div>
-                    <div class="h5 font-weight-bold px-md-2" id="total">${{100000}}</div>
-                </div>
-                <div class="text-muted tag">
-                    +add all the items to cart <span class="fas fa-shopping-cart pl-1"></span>
-                </div>
-            </div>
         </div>
     </div>
 </body>
@@ -404,22 +394,23 @@ button.btn:hover{
         $closeParent = $(this).parent();
         $id = $closeParent.find('input').val();
         $.ajax({
-            type: 'post',
+            type: 'GET',
             url : "{{URL::to('delete')}}",
             data: {
                 'id' : $id
             },
             success:function(data){
-                $('#title').html(data);
+                $('tbody').html(data);
                 //$('#total').html(data.data1);
+            },
+            error: function(){
+              $('#title').html('he');
             }
         });
     });
     $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
     $('#sub').click(function(){
-        $id = $(this).find('input').val();
-        if($id==0)$link = 'home1';
-        else $link = 'home1/id='+$id;
+        $link = 'home';
         window.location.replace($link);
     });
 </script>

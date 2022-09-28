@@ -22,9 +22,10 @@ Route::get('/', function () {
 })->name('a');
 Route::get('cartproduct/{product}', [CartController::class, 'showproduct'])->name('cart.product');
 Route::post('cartadd', [CartController::class, 'addCart'])->name('cart.addcart');
+Route::get('cartadd', [CartController::class, 'ShowaddCart'])->name('cart.showaddcart');
 Route::get('cartitems', [CartController::class, 'showCartItems'])->name('cart.showCartItems');
 Route::get('home', [HomeController::class, 'show'])->name('home');
-Route::post('delete', [CartController::class, 'delete']);
+Route::get('delete', [CartController::class, 'delete']);
 Route::middleware(['guest'])->group(function(){
     Route::get('register', [RegisterUserController::class, 'create'])->name('user.register');
     Route::post('register', [RegisterUserController::class, 'store'])->name('user.create');
